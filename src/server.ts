@@ -1,8 +1,10 @@
+import "reflect-metadata";
 import express from "express";
 import SwaggerUI from "swagger-ui-express";
 
 import { router } from "./routes";
 import swaggerJson from "./swagger.json";
+import "./shared/container";
 
 import "./database";
 
