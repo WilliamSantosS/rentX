@@ -2,7 +2,7 @@ import { hash } from "bcrypt";
 import { inject, injectable } from "tsyringe";
 
 import { AppError } from "../../../../errors/AppError";
-import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
+import { IUserDTO } from "../../dtos/IUserDTO";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 @injectable()
@@ -18,7 +18,7 @@ class CreateUserUseCase {
     password,
     drive_license,
     avatar,
-  }: ICreateUserDTO): Promise<void> {
+  }: IUserDTO): Promise<void> {
     const userAlreadyExists = await this.usersRepository.findByEmail(email);
     if (userAlreadyExists) {
       throw new AppError("E-mail already taken", 400);
