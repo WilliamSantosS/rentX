@@ -1,3 +1,4 @@
+/* eslint-disable no-return-await */
 import { getRepository, Repository } from "typeorm";
 
 import { ICarDTO } from "@modules/cars/dto/ICarDTO";
@@ -36,6 +37,30 @@ class CarRepository implements ICarRepository {
     } as ICarDTO);
 
     return this.repository.save(car);
+  }
+
+  async findAllAvailable(
+    name?: string,
+    category_id?: string,
+    brand?: string
+  ): Promise<Car[]> {
+    const carsQuery = this.repository
+      .createQueryBuilder("cars")
+      .where("available = :available", { available: true });
+
+    if (brand) {
+      carsQuery.andWhere("cars.brand = :brand", { brand });
+    }
+
+    if (category_id) {
+      carsQuery.andWhere("cars.category_id = :category_id", { category_id });
+    }
+
+    if (name) {
+      carsQuery.andWhere("cars.name = :name", { name });
+    }
+
+    return carsQuery.getMany();
   }
 }
 
